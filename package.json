@@ -1,0 +1,16 @@
+
+  {
+    "name": "checkpoint-6",
+    "version": "1.0.0",
+    "scripts": {
+      "build": "npm run setup:client && npm run setup:server && npm run build:client",
+      "setup:client": "cd checkpoint-6.client && npm i",
+      "setup:server": "cd checkpoint-6.server && npm i",
+      "build:client": "npm run --prefix checkpoint-6.client build",
+      "start": "node checkpoint-6.server/index.js"
+    },
+    "engines": {
+      "node": "^14.15.4"
+    }
+  }
+  
