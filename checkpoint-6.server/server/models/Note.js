@@ -16,3 +16,5 @@ Note.virtual('creator', {
   foreignField: '_id',
   justOne: true
 })
+
+export default Note

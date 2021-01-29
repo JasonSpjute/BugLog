@@ -6,7 +6,8 @@ const Bug = new Schema({
   description: { type: String, required: true },
   title: { type: String, required: true },
   closedDate: { type: Date },
-  creatorEmail: { type: String, required: true }
+  // creatorEmail: { type: String, required: true },
+  creatorId: { type: String, ref: 'Account', required: true }
 },
 { timestamps: true, toJSON: { virtuals: true } }
 )
