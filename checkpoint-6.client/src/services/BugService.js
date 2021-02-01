@@ -21,5 +21,11 @@ class BugService {
     await api.put('api/bugs/' + id, body)
     this.getOne(id)
   }
+
+  async changeStatus(id) {
+    const change = { closed: true }
+    await api.put('api/bugs/' + id, change)
+    this.getOne(id)
+  }
 }
 export const bugService = new BugService()

@@ -3,16 +3,22 @@
     <div class="row text-center">
       <div class="col">
         <h1>{{ state.bug.title }}</h1>
-        <h3>{{ state.bug.description }}</h3>
-        <h5>{{ state.bug.creator.name }}</h5>
+        <h5>Reported by - {{ state.bug.creator.name }}</h5>
+        <p>{{ state.bug.description }}</p>
       </div>
     </div>
     <div class="row text-center">
       <div class="col">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editBugModal">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editBugModal" v-if="state.bug.closed == false && state.bug.creatorId == state.account.id">
           Edit Bug
         </button>
         <EditBugModal :bug-prop="state.bug" />
+        <button class="btn btn-danger" v-if="state.bug.closed == false && state.bug.creatorId == state.account.id" @click="changeStatus">
+          Close bug
+        </button>
+        <button class="btn btn-danger" disabled v-if="state.bug.closed == true">
+          This bug is closed
+        </button>
       </div>
     </div>
     <div class="row">
@@ -34,7 +40,8 @@ export default {
     const route = useRoute()
     const state = reactive({
       notes: computed(() => AppState.notes),
-      bug: computed(() => AppState.active)
+      bug: computed(() => AppState.active),
+      account: computed(() => AppState.account)
     })
     onMounted(async() => {
       try {
@@ -49,7 +56,14 @@ export default {
       }
     })
     return {
-      state
+      state,
+      changeStatus() {
+        try {
+          bugService.changeStatus(route.params.id)
+        } catch (error) {
+          logger.log(error)
+        }
+      }
     }
   }
 }

@@ -1,11 +1,21 @@
 <template>
-  <div class="row">
+  <!-- <div class="row">
     <router-link :to="{ name: 'BugDetails', params: { id: bugProp.id }}">
-      <div class="col-12">
-        <h2>{{ bugProp.title }} - {{ bugProp.creator.name }} - {{ bugProp.closed }} - {{ bugProp.updatedAt }}</h2>
+      <div class="col-12 text">
+        <h2>{{ bugProp.title }} - {{ bugProp.creator.name }} - <span class="open" v-if="bugProp.closed==false">Open</span><span class="closed" v-else>Closed</span> - {{ bugProp.updatedAt }}</h2>
       </div>
     </router-link>
-  </div>
+  </div> -->
+  <tr>
+    <td>
+      <router-link :to="{ name: 'BugDetails', params: { id: bugProp.id }}">
+        {{ bugProp.title }}
+      </router-link>
+    </td>
+    <td>{{ bugProp.creator.name }}</td>
+    <td><span class="open" v-if="bugProp.closed==false">Open</span><span class="closed" v-else>Closed</span></td>
+    <td>{{ bugProp.updatedAt }}</td>
+  </tr>
 </template>
 <script>
 export default {
@@ -17,5 +27,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.text{
+  color: black;
+}
+.open{
+  color: green;
+}
+.closed{
+  color: red;
+}
 
 </style>

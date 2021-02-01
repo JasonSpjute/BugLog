@@ -8,12 +8,34 @@
     <div class="row text-center">
       <div class="col">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBugModal">
-          Create new Bug
+          Report new Bug
         </button>
         <CreateBugModal />
       </div>
     </div>
-    <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+    <div class="row">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">
+              Title
+            </th>
+            <th scope="col">
+              Reported by
+            </th>
+            <th scope="col">
+              Status
+            </th>
+            <th scope="col">
+              Last Modified
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
