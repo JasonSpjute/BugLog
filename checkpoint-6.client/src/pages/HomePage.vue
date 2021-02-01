@@ -1,15 +1,38 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo">
-    <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center">
-      <span class="mx-2 text-white">Vue 3 Starter</span>
-    </h1>
+  <div class="container-fluid">
+    <div class="row text-center">
+      <div class="col">
+        <h1>BUGS</h1>
+      </div>
+    </div>
+    <div class="row">
+      <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+    </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted, reactive } from 'vue'
+import { logger } from '../utils/Logger'
+import { bugService } from '../services/BugService'
+import { AppState } from '../AppState'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    const state = reactive({
+      bugs: computed(() => AppState.bugs)
+    })
+    onMounted(async() => {
+      try {
+        await bugService.getBugs()
+      } catch (error) {
+        logger.error(error)
+      }
+    })
+    return {
+      state
+    }
+  }
 }
 </script>
 

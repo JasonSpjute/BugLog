@@ -6,7 +6,7 @@ class NoteService {
   }
 
   async getNotes(query = {}) {
-    return await dbContext.Notes.find(query)
+    return await dbContext.Notes.find(query).populate('creator')
   }
 
   async edit(id, title) {
