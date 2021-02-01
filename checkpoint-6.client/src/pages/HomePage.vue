@@ -5,9 +5,15 @@
         <h1>BUGS</h1>
       </div>
     </div>
-    <div class="row">
-      <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
+    <div class="row text-center">
+      <div class="col">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBugModal">
+          Create new Bug
+        </button>
+        <CreateBugModal />
+      </div>
     </div>
+    <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
   </div>
 </template>
 
@@ -20,7 +26,8 @@ export default {
   name: 'Home',
   setup() {
     const state = reactive({
-      bugs: computed(() => AppState.bugs)
+      bugs: computed(() => AppState.bugs),
+      newBug: {}
     })
     onMounted(async() => {
       try {
