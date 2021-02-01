@@ -6,5 +6,10 @@ class NoteService {
     const res = await api.get('api/bugs/' + id + '/notes')
     AppState.notes = res.data
   }
+
+  async createNote(bugId, data) {
+    await api.post('api/notes', data)
+    this.getNotes(bugId)
+  }
 }
 export const noteService = new NoteService()

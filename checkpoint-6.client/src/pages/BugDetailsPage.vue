@@ -22,6 +22,10 @@
       </div>
     </div>
     <div class="row">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNoteModal" v-if="state.bug.closed == false">
+        Add a Note
+      </button>
+      <CreateNoteModal :bug-prop="state.bug.id" />
       <Note v-for="note in state.notes" :key="note.id" :note-prop="note" />
     </div>
   </div>
@@ -34,6 +38,7 @@ import { logger } from '../utils/Logger'
 import { bugService } from '../services/BugService'
 import { AppState } from '../AppState'
 import { noteService } from '../services/NoteService'
+import swal from 'sweetalert'
 export default {
   name: 'BugDetails',
   setup() {
@@ -58,11 +63,27 @@ export default {
     return {
       state,
       changeStatus() {
-        try {
-          bugService.changeStatus(route.params.id)
-        } catch (error) {
-          logger.log(error)
-        }
+        swal({
+          title: 'Are you sure?',
+          text: 'Once deleted, you will not be able to recover this imaginary file!',
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true
+        })
+          .then((willDelete) => {
+            if (willDelete) {
+              try {
+                bugService.changeStatus(route.params.id)
+                swal('This bug has been closed!', {
+                  icon: 'success'
+                })
+              } catch (error) {
+                logger.log(error)
+              }
+            } else {
+              swal('Your bug will remain open!')
+            }
+          })
       }
     }
   }

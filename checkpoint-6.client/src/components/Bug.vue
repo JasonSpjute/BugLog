@@ -14,7 +14,9 @@
     </td>
     <td>{{ bugProp.creator.name }}</td>
     <td><span class="open" v-if="bugProp.closed==false">Open</span><span class="closed" v-else>Closed</span></td>
-    <td>{{ bugProp.updatedAt }}</td>
+    <td v-if="bugProp.lastModified">
+      {{ bugProp.lastModified }}
+    </td>
   </tr>
 </template>
 <script>

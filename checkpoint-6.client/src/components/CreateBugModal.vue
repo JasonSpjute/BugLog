@@ -60,15 +60,21 @@ export default {
   name: 'CreateBugModal',
   setup() {
     const router = useRouter()
+    const today = new Date().toLocaleDateString()
     const state = reactive({
-      newBug: {}
+      newBug: {
+        title: '',
+        description: '',
+        lastModified: today
+      }
     })
     return {
       state,
       async createBug() {
         try {
           const id = await bugService.createBug(state.newBug)
-          state.newBug = {}
+          state.newBug.title = ''
+          state.newBug.description = ''
           $('#createBugModal').modal('toggle')
           router.push({ name: 'BugDetails', params: { id } })
         } catch (error) {

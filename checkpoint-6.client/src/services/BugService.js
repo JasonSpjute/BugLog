@@ -23,7 +23,10 @@ class BugService {
   }
 
   async changeStatus(id) {
-    const change = { closed: true }
+    const change = {
+      closed: true,
+      lastModified: new Date().toLocaleDateString()
+    }
     await api.put('api/bugs/' + id, change)
     this.getOne(id)
   }

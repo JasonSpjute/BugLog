@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade"
-       id="editBugModal"
+       id="createNoteModal"
        tabindex="-1"
        role="dialog"
        aria-labelledby="exampleModalLabel"
@@ -10,31 +10,22 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-            New Bug
+            New Note
           </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form @submit.prevent="editBug">
+        <form @submit.prevent="createNote">
           <div class="modal-body">
             <input
               type="text"
-              name="title"
-              id="title"
-              v-model="state.newBug.title"
+              name="content"
+              id="content"
+              v-model="state.newNote.content"
               class="form-control d-flex"
               aria-describedby="title"
-              placeholder="Title"
-            />
-            <input
-              type="text"
-              name="description"
-              id="description"
-              v-model="state.newBug.description"
-              class="form-control d-flex"
-              aria-describedby="description"
-              placeholder="Description"
+              placeholder="content"
             />
           </div>
           <div class="modal-footer">
@@ -42,7 +33,7 @@
               Close
             </button>
             <button type="submit" class="btn btn-primary">
-              Update Bug
+              Submit Note
             </button>
           </div>
         </form>
@@ -52,35 +43,38 @@
 </template>
 <script>
 import { reactive } from 'vue'
+import { noteService } from '../services/NoteService'
 import { logger } from '../utils/Logger'
-import { bugService } from '../services/BugService'
 import $ from 'jquery'
-
+import { bugService } from '../services/BugService'
 export default {
-  name: 'EditBugModal',
+  name: 'CreateNoteModal',
   props: {
-    bugProp: { type: Object, required: true }
+    bugProp: { type: String, required: true }
   },
   setup(props) {
-    const today = new Date().toLocaleDateString()
     const state = reactive({
-      newBug: {
-        title: props.bugProp.title,
-        description: props.bugProp.description,
-        lastModified: today
+      newNote: {
+        content: '',
+        bug: props.bugProp
       }
     })
     return {
       state,
-      editBug() {
+      async createNote() {
         try {
-          bugService.editBug(props.bugProp.id, state.newBug)
-          $('#editBugModal').modal('toggle')
+          await noteService.createNote(props.bugProp, state.newNote)
+          await bugService.editBug(props.bugProp, { lastModified: new Date().toLocaleDateString() })
+          state.newBug.content = ''
+          $('#createNoteModal').modal('toggle')
         } catch (error) {
-          logger.log(error)
+          logger.error(error)
         }
       }
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+
+</style>
