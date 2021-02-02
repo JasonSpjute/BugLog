@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" v-if="state.bug.creator">
+  <div class="container-fluid" v-if="state.loaded">
     <div class="row text-center">
       <div class="col">
         <h1>{{ state.bug.title }}</h1>
@@ -12,7 +12,7 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editBugModal" v-if="state.bug.closed == false && state.bug.creatorId == state.account.id">
           Edit Bug
         </button>
-        <EditBugModal :bug-prop="state.bug" />
+        <EditBugModal />
         <button class="btn btn-danger" v-if="state.bug.closed == false && state.bug.creatorId == state.account.id" @click="changeStatus">
           Close bug
         </button>
@@ -70,13 +70,16 @@ export default {
     const state = reactive({
       notes: computed(() => AppState.notes),
       bug: computed(() => AppState.active),
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      loaded: false
     })
     onMounted(async() => {
       try {
         await bugService.getOne(route.params.id)
       } catch (error) {
         logger.log(error)
+      } finally {
+        state.loaded = true
       }
       try {
         await noteService.getNotes(route.params.id)
@@ -89,7 +92,7 @@ export default {
       changeStatus() {
         swal({
           title: 'Are you sure?',
-          text: 'Once deleted, you will not be able to recover this imaginary file!',
+          text: 'Once closed, you will not be able to edit this bug!',
           icon: 'warning',
           buttons: true,
           dangerMode: true

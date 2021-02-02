@@ -12,9 +12,13 @@ class NoteService {
     this.getNotes(bugId)
   }
 
-  async editNote(id, body, bugId) {
+  async editNote(id, body) {
     await api.put('api/notes/' + id, body)
-    this.getNotes(bugId)
+  }
+
+  async deleteNote(note) {
+    await api.delete('api/notes/' + note.id)
+    this.getNotes(note.bug)
   }
 }
 export const noteService = new NoteService()

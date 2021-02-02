@@ -22,7 +22,7 @@
               type="text"
               name="title"
               id="title"
-              v-model="state.newBug.title"
+              v-model="newBug.title"
               class="form-control d-flex"
               aria-describedby="title"
               placeholder="Title"
@@ -31,7 +31,7 @@
               type="text"
               name="description"
               id="description"
-              v-model="state.newBug.description"
+              v-model="newBug.description"
               class="form-control d-flex"
               aria-describedby="description"
               placeholder="Description"
@@ -51,30 +51,32 @@
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import { logger } from '../utils/Logger'
 import { bugService } from '../services/BugService'
 import $ from 'jquery'
+import { AppState } from '../AppState'
 
 export default {
   name: 'EditBugModal',
-  props: {
-    bugProp: { type: Object, required: true }
-  },
-  setup(props) {
+  // props: {
+  //   bugProp: { type: Object, required: true }
+  // },
+  setup() {
     const today = new Date().toLocaleDateString()
     const state = reactive({
-      newBug: {
-        title: props.bugProp.title,
-        description: props.bugProp.description,
-        lastModified: today
-      }
+      bug: computed(() => AppState.active)
     })
     return {
       state,
+      newBug: {
+        title: state.bug.title,
+        description: state.bug.description,
+        lastModified: today
+      },
       editBug() {
         try {
-          bugService.editBug(props.bugProp.id, state.newBug)
+          bugService.editBug(state.bug.id, this.newBug)
           $('#editBugModal').modal('toggle')
         } catch (error) {
           logger.log(error)

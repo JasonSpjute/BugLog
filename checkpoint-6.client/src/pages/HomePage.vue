@@ -13,6 +13,19 @@
         <CreateBugModal />
       </div>
     </div>
+    <div class="row text-center">
+      <div class="col">
+        <button class="btn btn-success m-2" @click="state.view = 'open'">
+          Show Only Open
+        </button>
+        <button class="btn btn-info m-2" @click="state.view = 'closed'">
+          Show Only Closed
+        </button>
+        <button class="btn btn-warning m-2" @click="state.view = 'all'">
+          Show All
+        </button>
+      </div>
+    </div>
     <div class="row">
       <table class="table table-striped">
         <thead>
@@ -31,7 +44,13 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="state.view == 'closed'">
+          <Bug v-for="bug in state.openBugs" :key="bug.id" :bug-prop="bug" />
+        </tbody>
+        <tbody v-else-if="state.view == 'open'">
+          <Bug v-for="bug in state.closedBugs" :key="bug.id" :bug-prop="bug" />
+        </tbody>
+        <tbody v-else>
           <Bug v-for="bug in state.bugs" :key="bug.id" :bug-prop="bug" />
         </tbody>
       </table>
@@ -49,7 +68,10 @@ export default {
   setup() {
     const state = reactive({
       bugs: computed(() => AppState.bugs),
-      newBug: {}
+      openBugs: computed(() => AppState.bugs.filter(b => b.closed === true)),
+      closedBugs: computed(() => AppState.bugs.filter(b => b.closed === false)),
+      newBug: {},
+      view: 'all'
     })
     onMounted(async() => {
       try {
