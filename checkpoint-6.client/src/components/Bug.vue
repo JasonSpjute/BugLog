@@ -1,11 +1,4 @@
 <template>
-  <!-- <div class="row">
-    <router-link :to="{ name: 'BugDetails', params: { id: bugProp.id }}">
-      <div class="col-12 text">
-        <h2>{{ bugProp.title }} - {{ bugProp.creator.name }} - <span class="open" v-if="bugProp.closed==false">Open</span><span class="closed" v-else>Closed</span> - {{ bugProp.updatedAt }}</h2>
-      </div>
-    </router-link>
-  </div> -->
   <tr>
     <td>
       <router-link :to="{ name: 'BugDetails', params: { id: bugProp.id }}">

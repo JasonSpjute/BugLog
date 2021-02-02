@@ -25,8 +25,32 @@
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNoteModal" v-if="state.bug.closed == false">
         Add a Note
       </button>
+    </div>
+    <div class="row">
       <CreateNoteModal :bug-prop="state.bug.id" />
-      <Note v-for="note in state.notes" :key="note.id" :note-prop="note" />
+    </div>
+    <div class="row">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">
+              Written by
+            </th>
+            <th scope="col">
+              Note
+            </th>
+            <th class="text-center" scope="col">
+              Edit
+            </th>
+            <th class="text-center" scope="col">
+              Delete
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <Note v-for="note in state.notes" :key="note.id" :note-prop="note" />
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

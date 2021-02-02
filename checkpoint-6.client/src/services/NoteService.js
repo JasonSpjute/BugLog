@@ -11,5 +11,10 @@ class NoteService {
     await api.post('api/notes', data)
     this.getNotes(bugId)
   }
+
+  async editNote(id, body, bugId) {
+    await api.put('api/notes/' + id, body)
+    this.getNotes(bugId)
+  }
 }
 export const noteService = new NoteService()
