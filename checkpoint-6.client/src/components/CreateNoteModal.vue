@@ -65,7 +65,7 @@ export default {
         try {
           await noteService.createNote(props.bugProp, state.newNote)
           await bugService.editBug(props.bugProp, { lastModified: new Date().toLocaleDateString() })
-          state.newBug.content = ''
+          state.newNote.content = ''
           $('#createNoteModal').modal('toggle')
         } catch (error) {
           logger.error(error)
