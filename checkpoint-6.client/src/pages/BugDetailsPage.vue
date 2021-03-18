@@ -116,3 +116,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container-fluid{
+    background-image: url(https://cobaltdigital.marketing/wp-content/uploads/2018/12/Light-Grey-Background-Texture-4.jpg);
+    background-size: cover;
+  }
+</style>
